@@ -1,43 +1,20 @@
-import tkinter
+import tkinter as tk
+from PIL import ImageTk, Image
 
-#from snakesandladders import *
+root=tk.Tk()
+root.geometry("1920x1080")
+root.title("Snakes & Ladders")
 
-from tkinter import *
-from tkinter import ttk
+F1=tk.Frame(root, width=1000, height=1000, relief='raised')
+F1.place(x=0, y=0)
 
-def win1():
-    win = Tk()
-    win.geometry("360x120")
-    win.grid()
+bg=Image.open("finalboard.png")
+resized_bg= bg.resize((1000,1000), Image.LANCZOS)
+new_bg= ImageTk.PhotoImage(resized_bg)
+bglbl=tk.Label(F1, image=new_bg)
+bglbl.place(x=0, y=0)
 
-    #win.title("Click the Button to Close the Window")
-    def close():
-        win2 = Tk()
-        win2.geometry("350x120")
-        win2.grid()
-        win2.quit()
-        def end():
-            win.destroy()
-            win2.destroy()
-        def cont():
-            win2.destroy()            
-           
-        label=Label(win2, text= "Are you sure you want to exit?", font=("Calibri",14)).grid(column=0, row=0)
-        yes=Button(win2, text= "Yes", font=("Calibri",14), command=end, bg="#cdcdcd", fg='black').grid(column=1, row=1)
-        no=Button(win2, text= "No", font=("Calibri",14), command=cont, bg="#cdcdcd", fg='black').grid(column=2, row=1)
+b1=tk.Button(root, text="Rules", height=3, width=20, fg="#BABABA", bg="#EEEEEE", font=("Poppins", "14", "bold"), relief="flat")
+b1.place(x=1200, y=400)
 
-    exit1=Button(win, text= "Exit Application", font=("Calibri",14), command=close, bg="#a52a2a", fg='white').grid(column=0, row=1)
-
-    win.mainloop()
-
-win1()
-'''
-from tkinter import *
-from tkinter import ttk
-root = Tk()
-frm = ttk.Frame(root, padding=10)
-frm.grid()
-ttk.Label(frm, text="Hello World!").grid(column=0, row=0)
-ttk.Button(frm, text="Quit", command=root.destroy).grid(column=1, row=0)
-root.mainloop()'''
-
+root.mainloop()

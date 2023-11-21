@@ -22,8 +22,7 @@ def board(pos):
                 print("  ", "•", end=" |")
             elif j==100:
                 print("", j, end=" |")
-            elif j>9 and j<100:
-                print(" ", j, end=" |")
+            elif j>9 and j<100:                print(" ", j, end=" |")
             elif j>0 and j<10:
                 print("  ", j, end=" |")
         print("")
