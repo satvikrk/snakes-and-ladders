@@ -78,15 +78,16 @@ def win(): #Fix opening of multiple windows
             root.destroy()
         def cont():
             win4.destroy()
-        label=tk.Label(win4, text= "Are you sure you want to exit?", font=("Playfair Display", 14,'bold')).grid(column=0, row=0)
-        yes=tk.Button(win4, text= "Yes", font=("Playfair Display",14), command=end, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').grid(column=1, row=1)
-        no=tk.Button(win4, text= "No", font=("Playfair Display",14), command=cont, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').grid(column=2, row=1)
+        label=tk.Label(win4, text= "Are you sure you want to exit?", font=("Playfair Display", 14)).place(x=40, y=7)
+        yes=tk.Button(win4, width=3, text= "Yes", font=("Playfair Display", 14), command=end, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=40, y=50)
+        no=tk.Button(win4, width=3, text= "No", font=("Playfair Display", 14), command=cont, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=90, y=50)
     timetaken=end-begin
     timetaken=round(timetaken, 3)
     labelwin=tk.Label(win3, text= "You win!", font=("Playfair Display",14)).pack()
     labeltime=tk.Label(win3, text= "Time taken: "+ str(timetaken) + "s", font=("Playfair Display",14)).pack()
     exit1=tk.Button(win3, text= "Exit Application", font=("Playfair Display",14), command=close2, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').pack()  
 #Exit Window
+
 def close():
     win2 = tk.Tk()
     win2.title("Exit Confirmation")
