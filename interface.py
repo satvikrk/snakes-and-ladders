@@ -4,8 +4,23 @@ import random
 from PIL import ImageTk, Image
 import time
 import math
+import csv
+
+qno=0
+qL=[]
+answer=""
+
+with open('qbank.csv', 'r') as file:
+    questions=csv.reader(file)
+    for i in questions:
+        qL.append(i)
+    qL.remove(qL[0])
 
 flag = True
+flag1 = True
+ladders = {2: 38, 4: 14, 8: 30, 21: 42, 28: 76, 50: 67, 71: 92, 80: 99}
+snakes = {32: 10, 34: 6, 48: 26, 62: 18, 88: 24, 95: 56, 97: 78}
+pos=1
 
 #Initialise main window
 root=tk.Tk()
@@ -78,20 +93,85 @@ def update():
 def rules():
     return None
 
-def movepawn(pos):
-    if pos<=100:
-        pawn.place(x=d[pos][0], y=d[pos][1])
-    if pos>100:
-        pawn.place(x=d[100][0], y=d[100][1])
+def questionwin():
+    global flag1
+    flag1=False
+    win5 = tk.Tk()
+    win5.title("Question")
+    win5.geometry("400x200")
+    win5.grid()
+    
+    def pass1():
+        win5.destroy()
+    def cont():
+        win5.destroy()            
+
+    label=tk.Label(win5, text= "Question:", font=("Playfair Display", 14)).place(x=40, y=7)
+    yes=tk.Button(win5, width=3, text= "Pass", font=("Playfair Display", 14), command=pass1, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').pack()
+
+    ans_var=tk.StringVar()
+
+    def submit():
+        global answer
+        answer=ans_var.get()
+        print(answer)
+        ans_var.set("")
+        checkans()
+
+    ans_entry=tk.Entry(root, textvariable = ans_var, font = ("Playfair Display", 18, 'bold'), relief='flat').pack()
+    sub_btn=tk.Button(root,text = 'Submit', command = submit).pack()
+
+    def checkans():
+        if " "+answer in qL[qno][2:]:
+            return True
+        else:
+            return False
+        
+    if checkans()
+
+    def question():
+        global qno
+        x=len(qL)
+        qno=random.randint(0, x-1)
+        q=qL[qno][1]
+        my_label=Label(root, text=q, font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
+        my_label.place(x=1000, y=363)
+        return True
+
+def movepawn():
+    global pos
+    if flag==True:
+        if pos in snakes:
+            question()
+            #result=checkans()
+            #if result==False:
+            l1=Label(root, width=60, text="The snake at position "+str(pos)+" has bitten you. Your current position is "+ str(snakes[pos])+".", font=("Playfair Display", 19, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
+            l1.place(x=1000, y=314)
+            pos=snakes[pos]
+            pawn.place(x=d[pos][0], y=d[pos][1])
+        elif pos in ladders:
+            question()
+            #result=checkans()
+            #if result==True:
+            l2=Label(root, width=60, text="You have climbed up the ladder at position "+str(pos)+". Your current position is "+ str(ladders[pos])+".", font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
+            l2.place(x=1000, y=314)
+            pos=ladders[pos]
+            pawn.place(x=d[pos][0], y=d[pos][1])
+        elif pos<=100:
+            pawn.place(x=d[pos][0], y=d[pos][1])
+        elif pos>100:
+            pawn.place(x=d[100][0], y=d[100][1])
+    else:
+        return None
 
 def rolldice():
-    if flag==True:
+    if flag==True and flag1==True:
         global pos
         dice=random.randint(1, 6)
         pos+=dice
         if pos>=100:
             win()
-        movepawn(pos)
+        movepawn()
         dicelabel=tk.Label(root, text= "You rolled a "+ str(dice) + "!", font=("Playfair Display", 25, 'bold'), bg="#EED2CC").place(x=1250, y=144)
     else:
         return None
@@ -150,8 +230,7 @@ clock()
 
 begin = time.time()
 
-pos=1
-movepawn(1)
+movepawn()
 
 exit1=tk.Button(root, text= "Exit Application", font=("Playfair Display", 25, 'bold'), command=close, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=1000, y=44)
 dice1=tk.Button(root, text= "Roll the Dice", font=("Playfair Display", 25, 'bold'), command=rolldice, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=1000, y=134)
