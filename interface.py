@@ -1,3 +1,8 @@
+import tkinter as tk
+import random
+from tkinter import *
+import time
+from PIL import ImageTk,Image
 from questions import *
 
 flag = True
@@ -81,18 +86,21 @@ def rules():
 
 def movepawn():
     global pos
-    global torf
     if flag==True:
         if pos in snakes:
-            l1=Label(root, width=60, text="The snake at position "+str(pos)+" has bitten you. Your current position is "+ str(snakes[pos])+".", font=("Playfair Display", 19, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
-            l1.place(x=1000, y=314)
-            pos=snakes[pos]
-            pawn.place(x=d[pos][0], y=d[pos][1])
+            x = fn()
+            if x == False:
+                l1=Label(root, width=60, text="The snake at position "+str(pos)+" has bitten you. Your current position is "+ str(snakes[pos])+".", font=("Playfair Display", 19, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
+                l1.place(x=1000, y=314)
+                pos=snakes[pos]
+                pawn.place(x=d[pos][0], y=d[pos][1])
         elif pos in ladders:
-            l2=Label(root, width=60, text="You have climbed up the ladder at position "+str(pos)+". Your current position is "+ str(ladders[pos])+".", font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
-            l2.place(x=1000, y=314)
-            pos=ladders[pos]
-            pawn.place(x=d[pos][0], y=d[pos][1])
+            x = fn()
+            if x == True:
+                l2=Label(root, width=60, text="You have climbed up the ladder at position "+str(pos)+". Your current position is "+ str(ladders[pos])+".", font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
+                l2.place(x=1000, y=314)
+                pos=ladders[pos]
+                pawn.place(x=d[pos][0], y=d[pos][1])
         elif pos<=100:
             pawn.place(x=d[pos][0], y=d[pos][1])
         elif pos>100:
@@ -165,8 +173,6 @@ my_label.place(x=1300, y=54)
 clock()
 
 begin = time.time()
-
-movepawn()
 
 exit1 = tk.Button(root, text= "Exit Application", font=("Playfair Display", 25, 'bold'), command=close, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=1000, y=44)
 dice1 = tk.Button(root, text= "Roll the Dice", font=("Playfair Display", 25, 'bold'), command=rolldice, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=1000, y=134)
