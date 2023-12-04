@@ -17,7 +17,7 @@ with open('qbank.csv', 'r') as file:
     qL.remove(qL[0])
 
 def fn():
-
+    flag1=False
     win5 = tk.Tk()
     win5.title("Exit Confirmation")
     win5.geometry("1080x720")
@@ -46,14 +46,17 @@ def fn():
     def submit():
         global torf
         answer = textBox.get("1.0", "end-1c")
+        print(answer)
         if " "+answer.lower() in qL[qno][2:]:
             torf = True
         else:
             torf = False
+        print(torf)
         win5.destroy()
     
     textBox = Text(win5, font=("Playfair Display", 14), height = 2, width = 15)
     textBox.place(x = 200, y = 155)
     tk.Button(win5, text = 'Submit', command = lambda:submit()).pack()
 
+    flag1=True
     return torf

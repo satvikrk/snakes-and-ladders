@@ -1,9 +1,20 @@
 import tkinter as tk
-import random
 from tkinter import *
+import random
 import time
+import csv
 from PIL import ImageTk,Image
-from questions import *
+
+
+qno=0
+qL=[]
+torf=False
+
+with open('qbank.csv', 'r') as file:
+    questions=csv.reader(file)
+    for i in questions:
+        qL.append(i)
+    qL.remove(qL[0])
 
 flag = True
 flag1 = True
@@ -11,7 +22,67 @@ ladders = {2: 38, 4: 14, 8: 30, 21: 42, 28: 76, 50: 67, 71: 92, 80: 99}
 snakes = {32: 10, 34: 6, 48: 26, 62: 18, 88: 24, 95: 56, 97: 78}
 pos=1
 
-questions_path = "C:\\Users\\lenovo\\Documents\\GitHub\\snakes-and-ladders\\questions.py"
+def fn():
+    global pos
+    flag1=False
+    win5 = tk.Tk()
+    win5.title("Exit Confirmation")
+    win5.geometry("1080x720")
+
+    def question():
+        global qno
+        x=len(qL)
+        qno=random.randint(0, x-1)
+        q=qL[qno][1]
+        my_label=Label(win5, text=q, font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat').pack()
+        return True
+
+    def pass1():
+        time.sleep(5)
+        win5.destroy()
+
+    def pass2():
+        win5.destroy()
+
+    question()
+
+    tk.Label(win5, text= "Question:", font=("Playfair Display", 14)).pack()
+    pass_btn=tk.Button(win5, width=3, text= "Pass", font=("Playfair Display", 14), command=pass1, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').pack() 
+
+    def movepawn2():
+        global pos
+        if pos in snakes:
+            if not torf:
+                l1=Label(root, width=60, text="The snake at position "+str(pos)+" has bitten you. Your current position is "+ str(snakes[pos])+".", font=("Playfair Display", 19, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
+                l1.place(x=1000, y=314)
+                pos=snakes[pos]
+                pawn.place(x=d[pos][0], y=d[pos][1])
+        elif pos in ladders:
+            if torf:
+                l2=Label(root, width=60, text="You have climbed up the ladder at position "+str(pos)+". Your current position is "+ str(ladders[pos])+".", font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
+                l2.place(x=1000, y=314)
+                pos=ladders[pos]
+                pawn.place(x=d[pos][0], y=d[pos][1])
+
+    def submit():
+        global torf
+        answer = textBox.get("1.0", "end-1c")
+        print(answer)
+        if " "+answer.lower() in qL[qno][2:]:
+            torf = True
+        else:
+            torf = False
+        print(torf)
+        movepawn2()
+        win5.destroy()
+    
+    
+    textBox = Text(win5, font=("Playfair Display", 14), height = 2, width = 15)
+    textBox.place(x = 200, y = 155)
+    tk.Button(win5, text = 'Submit', command = lambda:submit()).pack()
+
+    flag1=True
+    return torf
 
 #Initialise main window
 root=tk.Tk()
@@ -87,21 +158,7 @@ def rules():
 def movepawn():
     global pos
     if flag==True:
-        if pos in snakes:
-            x = fn()
-            if x == False:
-                l1=Label(root, width=60, text="The snake at position "+str(pos)+" has bitten you. Your current position is "+ str(snakes[pos])+".", font=("Playfair Display", 19, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
-                l1.place(x=1000, y=314)
-                pos=snakes[pos]
-                pawn.place(x=d[pos][0], y=d[pos][1])
-        elif pos in ladders:
-            x = fn()
-            if x == True:
-                l2=Label(root, width=60, text="You have climbed up the ladder at position "+str(pos)+". Your current position is "+ str(ladders[pos])+".", font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
-                l2.place(x=1000, y=314)
-                pos=ladders[pos]
-                pawn.place(x=d[pos][0], y=d[pos][1])
-        elif pos<=100:
+        if pos<=100:
             pawn.place(x=d[pos][0], y=d[pos][1])
         elif pos>100:
             pawn.place(x=d[100][0], y=d[100][1])
@@ -115,7 +172,12 @@ def rolldice():
         pos+=dice
         if pos>=100:
             win()
-        movepawn()
+        elif pos in snakes:
+            fn()
+        elif pos in ladders:
+            fn()
+        else:
+            movepawn()
         dicelabel=tk.Label(root, text= "You rolled a "+ str(dice) + "!", font=("Playfair Display", 25, 'bold'), bg="#EED2CC").place(x=1250, y=144)
     else:
         return None
