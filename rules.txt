@@ -1,9 +1,4 @@
-RUlES for the game:
-
-1. The timer staarts as soon as the game begins 
-2. when a player lands on a snake , a riddle pops if they answer they get to stay in the current position if they fail to answer they go down by a 
-   few positions as in the original game
-3. when a player lands on a ladder , a riddle pops and if they answer they get to advance by a few spaces and if they fail to answer they stay in
-   the current position
-4. In the end the player who reaches the finish in the least time will be the winner 
-5. The game ends once all the players reach finish 
+1. The timer starts as soon as the game begins. (Timer on screen is indicative, more accurate timekeeping is done at the system level to ensure fair scores.)
+2. A question is displayed to the user if they land on a snake or ladder. If the user fails to answer a snake question, they are bitten by the snake and are moved back a few spaces. If the user answers a ladder question successfully, they are allowed to climb up the ladder and thereby advance a few spaces.
+3. If the player answers incorrectly or passes a question, 20 seconds are added to their total time.
+3. The player to complete the game in the least time is ranked first on the leaderboard, which is arranged in ascending order of times taken.

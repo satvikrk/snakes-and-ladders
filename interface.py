@@ -5,7 +5,6 @@ import time
 import csv
 from PIL import ImageTk,Image
 
-
 qno=0
 qL=[]
 torf=False
@@ -57,11 +56,15 @@ def fn():
                 l1.place(x=1000, y=314)
                 pos=snakes[pos]
                 pawn.place(x=d[pos][0], y=d[pos][1])
+            else:
+                pawn.place(x=d[pos][0], y=d[pos][1])
         elif pos in ladders:
             if torf:
                 l2=Label(root, width=60, text="You have climbed up the ladder at position "+str(pos)+". Your current position is "+ str(ladders[pos])+".", font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat')
                 l2.place(x=1000, y=314)
                 pos=ladders[pos]
+                pawn.place(x=d[pos][0], y=d[pos][1])
+            else:
                 pawn.place(x=d[pos][0], y=d[pos][1])
 
     def submit():
