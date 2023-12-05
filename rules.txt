@@ -1,4 +1,4 @@
 1. The timer starts as soon as the game begins. (Timer on screen is indicative, more accurate timekeeping is done at the system level to ensure fair scores.)
 2. A question is displayed to the user if they land on a snake or ladder. If the user fails to answer a snake question, they are bitten by the snake and are moved back a few spaces. If the user answers a ladder question successfully, they are allowed to climb up the ladder and thereby advance a few spaces.
 3. If the player answers incorrectly or passes a question, 20 seconds are added to their total time.
-3. The player to complete the game in the least time is ranked first on the leaderboard, which is arranged in ascending order of times taken.
+4. The player to complete the game in the least time is ranked first on the leaderboard, which is arranged in ascending order of times taken.

@@ -8,6 +8,7 @@ from PIL import ImageTk,Image
 qno=0
 qL=[]
 torf=False
+npass=0
 
 with open('qbank.csv', 'r') as file:
     questions=csv.reader(file)
@@ -23,29 +24,38 @@ pos=1
 
 def fn():
     global pos
+    global npass
     flag1=False
     win5 = tk.Tk()
     win5.title("Exit Confirmation")
     win5.geometry("1080x720")
+
+    def disable_event():
+        pass
+
+    win5.protocol("WM_DELETE_WINDOW", disable_event)
 
     def question():
         global qno
         x=len(qL)
         qno=random.randint(0, x-1)
         q=qL[qno][1]
-        my_label=Label(win5, text=q, font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat').pack()
+        my_label=Label(win5, text=q, wraplength=500, font=("Playfair Display", 18, 'bold'), bg="#FFFFFF", fg='#252627', activebackground="#D3FAC7", relief='flat').pack()
         return True
 
     def pass1():
-        time.sleep(5)
+        global npass
+        global torf
+        npass+=1
+        torf=False
+        movepawn2()
         win5.destroy()
 
     def pass2():
         win5.destroy()
 
-    question()
-
     tk.Label(win5, text= "Question:", font=("Playfair Display", 14)).pack()
+    question()
     pass_btn=tk.Button(win5, width=3, text= "Pass", font=("Playfair Display", 14), command=pass1, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').pack() 
 
     def movepawn2():
@@ -68,6 +78,7 @@ def fn():
                 pawn.place(x=d[pos][0], y=d[pos][1])
 
     def submit():
+        global npass
         global torf
         answer = textBox.get("1.0", "end-1c")
         print(answer)
@@ -75,13 +86,12 @@ def fn():
             torf = True
         else:
             torf = False
-        print(torf)
+            npass+=1
         movepawn2()
         win5.destroy()
     
-    
     textBox = Text(win5, font=("Playfair Display", 14), height = 2, width = 15)
-    textBox.place(x = 200, y = 155)
+    textBox.pack()
     tk.Button(win5, text = 'Submit', command = lambda:submit()).pack()
 
     flag1=True
@@ -156,7 +166,16 @@ def update():
     my_label.config(text="New Text")
 
 def rules():
-    return None
+    global flag
+    if flag==True:
+        win6=tk.Tk()
+        win6.geometry("1080x350")
+        win6.title("Rules")
+        win6.configure(bg="#EED2CC")
+        titlelbl=tk.Label(win6, wraplength=800, text= "Rules", font=("Playfair Display", 25, 'bold'), bg="#EED2CC").pack()
+        with open ("rules.txt", "r") as f1:
+            rulestxt=f1.read()
+        ruleslbl=tk.Label(win6, wraplength=800, text= rulestxt, font=("Playfair Display", 15, 'bold'), bg="#EED2CC").pack()
 
 def movepawn():
     global pos
@@ -187,12 +206,13 @@ def rolldice():
 
 def win(): #Fix opening of multiple windows
     global flag
+    global npass
     if flag==True:
         import time
         end=time.time()
         win3 = tk.Tk()
         win3.title("win")
-        win3.geometry("350x120")
+        win3.geometry("500x200")
         win3.grid()
         def close2():
             win4 = tk.Tk()
@@ -209,8 +229,9 @@ def win(): #Fix opening of multiple windows
             yes=tk.Button(win4, width=3, text= "Yes", font=("Playfair Display", 14), command=end, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=40, y=50)
             no=tk.Button(win4, width=3, text= "No", font=("Playfair Display", 14), command=cont, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=90, y=50)
         timetaken= end-begin
-        timetaken=int(timetaken)
+        timetaken=int(timetaken) + (npass*20)
         labelwin=tk.Label(win3, text= "You win!", font=("Playfair Display",14)).pack()
+        labelnpass=tk.Label(win3, text= "Number of passes and incorrect answers="+str(npass), font=("Playfair Display",14)).pack()
         labeltime=tk.Label(win3, text= "Time taken: "+ str(timetaken) + "s", font=("Playfair Display",14)).pack()
         exit1=tk.Button(win3, text= "Exit Application", font=("Playfair Display",14), command=close2, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').pack()  
     else:
