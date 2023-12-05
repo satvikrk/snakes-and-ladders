@@ -12,7 +12,7 @@ QCode, Q, A
 11, What bird is at every meal?, swallow
 12, What is broken when you name it?, silence
 13, How many times can 20 be subtracted from 100?, once, 1
-14, Take the number 30 divide it by 1/2 and add 10; what do you get? 70, seventy
+14, Take the number 30 divide it by 1/2 and add 10; what do you get?, 70, seventy
 15, What has teeth but no mouth?, comb, gear
 16, What number when multiplied by 5/4 gives the same answer as added to 5/4?, five, 5
 17, Sunil needs to take his pills every half an hour; how many hours will 3 pills last?, 1 hour, 1, one
@@ -32,6 +32,6 @@ QCode, Q, A
 31, Some months have 30 days while some have 31. How many have 28?, all of them, all, 12
 32, What belongs to you but is often used by others?, name, your name, your appelation, epithet, moniker
 33, Which animal sleeps with its shoes on?, horse
-34, Three closed boxes have either apples, bananas or a mixture of both. They're labelled "apples"; "bananas" and "mixed". The boxes are wrongly labelled. If you need to determine the contents of all three boxes after opening just one; which one do you open?, mixed
+34, Three closed boxes have either apples; bananas or a mixture of both. They're labelled "apples"; "bananas" and "mixed". The boxes are wrongly labelled. If you need to determine the contents of all three boxes after opening just one; which one do you open?, mixed
 35, In which five letter word is the balance one upon removing the first two characters?, acone, alone, atone, clone, crone, drone, irone, krone, leone, ohone, osone, ozone, phone, prone, scone, shone, slone, stone, trone
 36, What do you fill a barrel with to make it lighter than when it was empty?, holes

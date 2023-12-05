@@ -3,7 +3,7 @@ from tkinter import *
 import random
 import time
 import csv
-from PIL import ImageTk,Image
+from PIL import ImageTk, Image
 
 qno=0
 qL=[]
