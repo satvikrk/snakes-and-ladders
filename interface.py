@@ -1,14 +1,17 @@
 import tkinter as tk
 from tkinter import *
+from tkinter import ttk
 import random
 import time
 import csv
 from PIL import ImageTk, Image
+import mysql.connector as m
 
 qno=0
 qL=[]
 torf=False
 npass=0
+name=""
 
 with open('qbank.csv', 'r') as file:
     questions=csv.reader(file)
@@ -21,6 +24,96 @@ flag1 = True
 ladders = {2: 38, 4: 14, 8: 30, 21: 42, 28: 76, 50: 67, 71: 92, 80: 99}
 snakes = {32: 10, 34: 6, 48: 26, 62: 18, 88: 24, 95: 56, 97: 78}
 pos=1
+
+def login():
+    global name
+    flag=False
+    import tkinter as tk
+    win6=tk.Tk()
+    win6.configure(bg="#EED2CC")
+    win6.geometry("700x325")
+    win6.grid()
+
+    # declaring string variable
+    # for storing name and password
+    name_var=tk.StringVar()
+    passw_var=tk.StringVar()
+
+
+    # defining a function that will
+    # get the name and password and 
+    # print them on the screen
+
+    def submit():
+        global name
+        name=name_var.get()
+        print("The name is : " + name)
+        name_var.set("")
+        win6.destroy()
+        flag=True
+
+    def rules():
+        win7=tk.Tk()
+        win7.geometry("1080x350")
+        win7.title("Rules")
+        win7.configure(bg="#EED2CC")
+        titlelbl=tk.Label(win7, wraplength=800, text= "Rules", font=("Playfair Display", 25, 'bold'), bg="#EED2CC").pack()
+        with open ("rules.txt", "r") as f1:
+            rulestxt=f1.read()
+        ruleslbl=tk.Label(win7, wraplength=800, text= rulestxt, font=("Playfair Display", 15, 'bold'), bg="#EED2CC").pack()
+    
+    
+    rules2 = tk.Button(win6, text= "Rules", font=("Playfair Display", 25, 'bold'), command=rules, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=100, y=170)
+
+    def leaderboard():
+        con=m.connect(host="localhost", user="root", password="root", db="satvik")
+        mycursor=con.cursor()
+        mycursor.execute("select * from leaderboard order by timetaken asc")
+        records=mycursor.fetchall()
+        recordstr=""
+        for i in records:
+            recordstr+=i[0]+" : "+str(i[1])+"\n"
+        print(records)
+        con.close()
+        root1 = Tk()
+        root1.geometry("500x400")
+        root1.title("Leaderboard")
+        root1.configure(bg="#EED2CC")
+
+        main_frame = Frame(root1)
+        main_frame.pack(fill=BOTH, expand=1)
+
+        my_canvas = Canvas(main_frame)
+        my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
+
+        my_scrollbar = ttk.Scrollbar(main_frame, orient=VERTICAL, command=my_canvas.yview)
+        my_scrollbar.pack(side=RIGHT, fill=Y)
+
+        my_canvas.configure(yscrollcommand=my_scrollbar.set)
+        my_canvas.configure(bg="#EED2CC")
+        my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
+
+        second_frame = Frame(my_canvas)
+        second_frame.configure(bg="#EED2CC")
+
+        my_canvas.create_window((0,0), window=second_frame, anchor="nw")
+
+        my_label = Label(second_frame, text=recordstr, font=("Playfair Display", 18, 'bold'), bg="#EED2CC").pack()
+
+        root1.mainloop()
+
+    name_label = tk.Label(win6, text = 'Username', font=("Playfair Display", 15, 'bold'))
+    name_entry = tk.Entry(win6, textvariable = name_var, font=("Playfair Display", 27, 'bold'))
+
+    sub_btn=tk.Button(win6, text= "→", font=("Playfair Display", 18, 'bold'), command=submit, bg="#D3FAC7", fg='#252627', activebackground="#e83911", relief='flat', pady=0).place(x=550, y=100)
+    ldb_btn=tk.Button(win6, text= "Leaderboard", font=("Playfair Display", 25, 'bold'), command=leaderboard, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=225, y=170)
+
+    name_label.place(x=100, y=50)
+    name_entry.place(x=100, y=100)
+    win6.mainloop()
+
+login()
+
 
 def fn():
     global pos
@@ -177,6 +270,43 @@ def rules():
             rulestxt=f1.read()
         ruleslbl=tk.Label(win6, wraplength=800, text= rulestxt, font=("Playfair Display", 15, 'bold'), bg="#EED2CC").pack()
 
+def leaderboard():
+    con=m.connect(host="localhost", user="root", password="root", db="satvik")
+    mycursor=con.cursor()
+    mycursor.execute("select * from leaderboard order by timetaken asc")
+    records=mycursor.fetchall()
+    recordstr=""
+    for i in records:
+        recordstr+=i[0]+" : "+str(i[1])+"\n"
+    print(records)
+    con.close()
+    root1 = Tk()
+    root1.geometry("500x400")
+    root1.title("Leaderboard")
+    root1.configure(bg="#EED2CC")
+
+    main_frame = Frame(root1)
+    main_frame.pack(fill=BOTH, expand=1)
+
+    my_canvas = Canvas(main_frame)
+    my_canvas.pack(side=LEFT, fill=BOTH, expand=1)
+
+    my_scrollbar = ttk.Scrollbar(main_frame, orient=VERTICAL, command=my_canvas.yview)
+    my_scrollbar.pack(side=RIGHT, fill=Y)
+
+    my_canvas.configure(yscrollcommand=my_scrollbar.set)
+    my_canvas.configure(bg="#EED2CC")
+    my_canvas.bind('<Configure>', lambda e: my_canvas.configure(scrollregion = my_canvas.bbox("all")))
+
+    second_frame = Frame(my_canvas)
+    second_frame.configure(bg="#EED2CC")
+
+    my_canvas.create_window((0,0), window=second_frame, anchor="nw")
+
+    my_label = Label(second_frame, text=recordstr, font=("Playfair Display", 18, 'bold'), bg="#EED2CC").pack()
+
+    root1.mainloop()
+
 def movepawn():
     global pos
     if flag==True:
@@ -205,6 +335,7 @@ def rolldice():
         return None
 
 def win(): #Fix opening of multiple windows
+    global name
     global flag
     global npass
     if flag==True:
@@ -230,6 +361,9 @@ def win(): #Fix opening of multiple windows
             no=tk.Button(win4, width=3, text= "No", font=("Playfair Display", 14), command=cont, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=90, y=50)
         timetaken= end-begin
         timetaken=int(timetaken) + (npass*20)
+        with open("Leaderboard.txt", "a") as f5:
+            entry=name + " : " + str(timetaken) + "\n"
+            f5.write(entry)
         labelwin=tk.Label(win3, text= "You win!", font=("Playfair Display",14)).pack()
         labelnpass=tk.Label(win3, text= "Number of passes and incorrect answers="+str(npass), font=("Playfair Display",14)).pack()
         labeltime=tk.Label(win3, text= "Time taken: "+ str(timetaken) + "s", font=("Playfair Display",14)).pack()
@@ -237,6 +371,7 @@ def win(): #Fix opening of multiple windows
     else:
         return None
     flag=False
+    leaderboard()
 
 def close(): #Exit Window
     win2 = tk.Tk()
