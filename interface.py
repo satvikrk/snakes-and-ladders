@@ -12,6 +12,7 @@ qL=[]
 torf=False
 npass=0
 name=""
+timetaken=0
 
 with open('qbank.csv', 'r') as file:
     questions=csv.reader(file)
@@ -31,18 +32,11 @@ def login():
     import tkinter as tk
     win6=tk.Tk()
     win6.configure(bg="#EED2CC")
+    win6.title("Login")
     win6.geometry("700x325")
     win6.grid()
 
-    # declaring string variable
-    # for storing name and password
     name_var=tk.StringVar()
-    passw_var=tk.StringVar()
-
-
-    # defining a function that will
-    # get the name and password and 
-    # print them on the screen
 
     def submit():
         global name
@@ -174,7 +168,6 @@ def fn():
         global npass
         global torf
         answer = textBox.get("1.0", "end-1c")
-        print(answer)
         if " "+answer.lower() in qL[qno][2:]:
             torf = True
         else:
@@ -203,14 +196,14 @@ F1.place(x=0, y=0)
 #Add background image after resizing
 bg=Image.open("finalboard.png")
 resized_bg= bg.resize((1000,1000), Image.LANCZOS)
-new_bg= ImageTk.PhotoImage(resized_bg)
+new_bg = ImageTk.PhotoImage(resized_bg)
 bglbl=tk.Label(F1, image=new_bg)
 bglbl.place(x=0, y=0)
 
 #Player Pawn
 pawn=tk.Canvas(root, width=50, height=50)
 pawn.create_rectangle(0,0,100,100,fill='#039B96')
-pawn.place(x=70, y=70)
+pawn.place(x=70, y=880)
   
 #Index of each position
 d={}
@@ -271,12 +264,18 @@ def rules():
         ruleslbl=tk.Label(win6, wraplength=800, text= rulestxt, font=("Playfair Display", 15, 'bold'), bg="#EED2CC").pack()
 
 def leaderboard():
+    global name
+    global timetaken
     con=m.connect(host="localhost", user="root", password="root", db="satvik")
     mycursor=con.cursor()
+    sql = "INSERT INTO leaderboard (username, timetaken) VALUES (%s, %s)"
+    val = (name, timetaken)
+    mycursor.execute(sql, val)
+    con.commit()
     mycursor.execute("select * from leaderboard order by timetaken asc")
     records=mycursor.fetchall()
     recordstr=""
-    for i in records:
+    for i in records:   
         recordstr+=i[0]+" : "+str(i[1])+"\n"
     print(records)
     con.close()
@@ -338,6 +337,7 @@ def win(): #Fix opening of multiple windows
     global name
     global flag
     global npass
+    global timetaken
     if flag==True:
         import time
         end=time.time()
@@ -359,8 +359,8 @@ def win(): #Fix opening of multiple windows
             label=tk.Label(win4, text= "Are you sure you want to exit?", font=("Playfair Display", 14)).place(x=40, y=7)
             yes=tk.Button(win4, width=3, text= "Yes", font=("Playfair Display", 14), command=end, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=40, y=50)
             no=tk.Button(win4, width=3, text= "No", font=("Playfair Display", 14), command=cont, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=90, y=50)
-        timetaken= end-begin
-        timetaken=int(timetaken) + (npass*20)
+        timetaken = end-begin
+        timetaken = int(timetaken) + (npass*20)
         with open("Leaderboard.txt", "a") as f5:
             entry=name + " : " + str(timetaken) + "\n"
             f5.write(entry)
