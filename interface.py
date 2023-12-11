@@ -26,6 +26,7 @@ ladders = {2: 38, 4: 14, 8: 30, 21: 42, 28: 76, 50: 67, 71: 92, 80: 99}
 snakes = {32: 10, 34: 6, 48: 26, 62: 18, 88: 24, 95: 56, 97: 78}
 pos=1
 
+'''
 def login():
     global name
     flag=False
@@ -106,15 +107,15 @@ def login():
     name_entry.place(x=100, y=100)
     win6.mainloop()
 
-login()
-
+login()'''
 
 def fn():
     global pos
     global npass
+    global flag1
     flag1=False
     win5 = tk.Tk()
-    win5.title("Exit Confirmation")
+    win5.title("Question")
     win5.geometry("1080x720")
 
     def disable_event():
