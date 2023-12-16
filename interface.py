@@ -26,7 +26,7 @@ ladders = {2: 38, 4: 14, 8: 30, 21: 42, 28: 76, 50: 67, 71: 92, 80: 99}
 snakes = {32: 10, 34: 6, 48: 26, 62: 18, 88: 24, 95: 56, 97: 78}
 pos=1
 
-'''
+
 def login():
     global name
     flag=False
@@ -107,7 +107,7 @@ def login():
     name_entry.place(x=100, y=100)
     win6.mainloop()
 
-login()'''
+login()
 
 def fn():
     global pos
@@ -132,14 +132,13 @@ def fn():
         return True
 
     def pass1():
+        global flag1
         global npass
         global torf
         npass+=1
         torf=False
+        flag1=True
         movepawn2()
-        win5.destroy()
-
-    def pass2():
         win5.destroy()
 
     tk.Label(win5, text= "Question:", font=("Playfair Display", 14)).pack()
@@ -168,20 +167,21 @@ def fn():
     def submit():
         global npass
         global torf
+        global flag1
         answer = textBox.get("1.0", "end-1c")
-        if " "+answer.lower() in qL[qno][2:]:
+        if " "+answer.lower().split()[0] in qL[qno][2:]:
             torf = True
         else:
             torf = False
             npass+=1
+        flag1 = True
         movepawn2()
         win5.destroy()
     
     textBox = Text(win5, font=("Playfair Display", 14), height = 2, width = 15)
     textBox.pack()
+    textBox.bind('<Return>', submit)
     tk.Button(win5, text = 'Submit', command = lambda:submit()).pack()
-
-    flag1=True
     return torf
 
 #Initialise main window
@@ -331,14 +331,15 @@ def rolldice():
         else:
             movepawn()
         dicelabel=tk.Label(root, text= "You rolled a "+ str(dice) + "!", font=("Playfair Display", 25, 'bold'), bg="#EED2CC").place(x=1250, y=144)
-    else:
-        return None
 
 def win(): #Fix opening of multiple windows
     global name
     global flag
     global npass
     global timetaken
+    global pos
+    pos=100
+    movepawn()
     if flag==True:
         import time
         end=time.time()
@@ -362,9 +363,9 @@ def win(): #Fix opening of multiple windows
             no=tk.Button(win4, width=3, text= "No", font=("Playfair Display", 14), command=cont, bg="#e83911", fg='#252627', activebackground="#D3FAC7", relief='flat').place(x=90, y=50)
         timetaken = end-begin
         timetaken = int(timetaken) + (npass*20)
-        with open("Leaderboard.txt", "a") as f5:
+        '''with open("Leaderboard.txt", "a") as f5:
             entry=name + " : " + str(timetaken) + "\n"
-            f5.write(entry)
+            f5.write(entry)'''
         labelwin=tk.Label(win3, text= "You win!", font=("Playfair Display",14)).pack()
         labelnpass=tk.Label(win3, text= "Number of passes and incorrect answers="+str(npass), font=("Playfair Display",14)).pack()
         labeltime=tk.Label(win3, text= "Time taken: "+ str(timetaken) + "s", font=("Playfair Display",14)).pack()
